@@ -1,0 +1,26 @@
+name: IOS CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: make
+      run: |
+        mkdir build-ios
+        cd build-ios
+        cmake ..
+        make
+    - name: movefile
+      run: |
+        mkdir -p ./ios
+        ls -ltr ./build-ios/IBJts/samples/Cpp/TestCppClient
+        mv ./build-ios/IBJts/samples/Cpp/TestCppClient/TestCppClient ./ios/TestCppClient 
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ios
+        path: ./ios

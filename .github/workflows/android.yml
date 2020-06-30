@@ -1,0 +1,26 @@
+name: Android CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: make
+      run: |
+        mkdir build-android
+        cd build-android
+        cmake ..
+        make
+    - name: movefile
+      run: |
+        mkdir -p ./android
+        ls -ltr ./build-android/IBJts/samples/Cpp/TestCppClient
+        mv ./build-android/IBJts/samples/Cpp/TestCppClient/TestCppClient ./android/TestCppClient
+    - uses: actions/upload-artifact@v2
+      with:
+        name: android
+        path: ./android

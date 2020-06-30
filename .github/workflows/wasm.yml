@@ -1,0 +1,27 @@
+name: Wasm CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: trzeci/emscripten:latest
+    steps:
+    - uses: actions/checkout@master
+    - name: make
+      run: |
+        emcmake cmake .
+        emmake make
+    - name: movefile
+      run: |
+        mkdir -p ./wasm
+        ls -ltr ./IBJts/samples/Cpp/TestCppClient
+        mv ./IBJts/samples/Cpp/TestCppClient/TestCppClient.js ./wasm/TestCppClient.js
+        mv ./IBJts/samples/Cpp/TestCppClient/TestCppClient.worker.js ./wasm/TestCppClient.worker.js
+        mv ./IBJts/samples/Cpp/TestCppClient/TestCppClient.wasm ./wasm/TestCppClient.wasm
+    - uses: actions/upload-artifact@v2
+      with:
+        name: wasm
+        path: ./wasm

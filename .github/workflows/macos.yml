@@ -1,0 +1,26 @@
+name: MacOS CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: make
+      run: |
+        mkdir build-macos
+        cd build-macos
+        cmake ..
+        make
+    - name: movefile
+      run: |
+        mkdir -p ./macos
+        ls -ltr ./build-macos/IBJts/samples/Cpp/TestCppClient
+        mv ./build-macos/IBJts/samples/Cpp/TestCppClient/TestCppClient ./macos/TestCppClient      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: macos
+        path: ./macos
