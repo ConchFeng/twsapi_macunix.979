@@ -1,4 +1,4 @@
-name: SELF-HOST CI
+name: ubuntu CI
 on:
   push:
     branches: [ master ]
