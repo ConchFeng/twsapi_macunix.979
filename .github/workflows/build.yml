@@ -22,5 +22,5 @@ jobs:
         mv ./build-ubuntu/IBJts/samples/Cpp/TestCppClient/TestCppClient ./ubuntu/TestCppClient
     - uses: actions/upload-artifact@v2
       with:
-        name: ubuntu
+        name: ubuntu-self-hosted-build
         path: ./ubuntu
